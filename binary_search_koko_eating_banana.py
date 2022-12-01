@@ -59,7 +59,25 @@ class Solution:
         return res
 
 
-
+class Solution:
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        l, r = 1, max(piles) # pointers for the min, max eating speed
+        res = r
+        while l < r:
+            mid = (l + r) // 2 # if the eating speed
+            
+            hours = 0
+            for p in piles:
+                hours += math.ceil(p / mid)
+            
+            
+            if hours > h: # eat too slow
+                l = mid + 1
+            else:
+                res = min(res, mid)
+                r = mid
+        
+        return res
 
 
 

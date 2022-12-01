@@ -29,34 +29,3 @@ class Solution:
                 return nums[p]
         
         return quick_select(0, len(nums) - 1)
-
-
-class Solution:
-    def findKthLargest(self, nums: List[int], k: int) -> int:
-        k = len(nums) - k
-        
-        # left, right keep track of which portion of array we're running quick select on
-        def quick_select(start, end):
-            pivot = nums[start]
-            l, r = start, end
-            p = start
-            
-            while p <= r:
-                if nums[p] < pivot:
-                    nums[p], nums[l] = nums[l], nums[p]
-                    p += 1
-                    l += 1
-                elif nums[p] > pivot:
-                    nums[p], nums[r] = nums[r], nums[p]
-                    r -= 1
-                else:
-                    p += 1
-            
-            if (p - 1) > k:
-                return quick_select(start, r - 1)
-            elif (p - 1) < k:
-                return quick_select(l + 1, end)
-            else:
-                return pivot
-        
-        return quick_select(0, len(nums) - 1)

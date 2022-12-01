@@ -32,20 +32,26 @@ class Solution:
 # top-down solutions
 class Solution:
     def numSquares(self, n: int) -> int:
-        def dfs(amount, memo):
-            if amount in memo:
-                return memo[amount]
+        def dfs(remaining, memo):
+            if remaining == 0:
+                return 0
             
-            minCoins = float('inf')
-            x = int(sqrt(n))
-            for i in range(1, x + 1):
-                square = i * i
-                if amount - square >= 0:
-                    numOfCoins = dfs(amount - square, memo) + 1
-                    minCoins = min(numOfCoins, minCoins)
+            if remaining in memo:   
+                return memo[remaining]
             
-            memo[amount] = minCoins
-            return minCoins
+            min_total = float('inf')
+            for num in range(int(sqrt(n)), 0, -1):
+                pn = num ** 2
+                if remaining - pn >= 0:
+                    total = dfs(remaining - pn, memo) + 1
+                    min_total = min(min_total, total)
+            
+            
+            memo[remaining] = min_total
+            return min_total
         
-        rlt = dfs(n, {0:0})
-        return rlt if rlt != float('inf') else -1
+        res = dfs(n, {})
+        return res if res != float('inf') else -1
+
+# bfs, but use set to eliminate duplicate
+#   -> directly return if match found, since it'll always be the minimum
