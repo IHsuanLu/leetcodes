@@ -1,6 +1,13 @@
 # the question teaches us topological sort (the result order by traversing the adjaceny list)
 # running dfs on every node
 
+# the question is actually a topological sort problem
+# we are going to create an adajacency list
+
+# use dfs to traverse the adjacency list, appending the prereqs to the result list prior to the target node itself
+# create another hashset for detecting cycle
+# [[0, 1], [1, 0]] => []
+
 # same as course schedule -> create adjacency list at the very beginning
 # iterate through every node
 # record from the furthest to the nearest

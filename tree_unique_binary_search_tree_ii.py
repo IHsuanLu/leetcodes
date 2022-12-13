@@ -8,6 +8,8 @@ class TreeNode:
         self.left = left
         self.right = right
 
+
+# 把 subproblems 解決之後把結果 append 到 main problem
         
 class Solution:
     def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
@@ -26,6 +28,10 @@ class Solution:
                 leftSubtrees = dfs(start, curRootVal - 1)
                 rightSubtrees = dfs(curRootVal + 1, end)
                 
+                # every l and r is a valid tree's node
+                # and we append all the combinations to the new TreeNode (no deep copy is needed) with the `selected root value` and 
+                # append the root to the result, and the previous round's leftSubtrees or rightSubtrees
+
                 for l in leftSubtrees: # get each possible left subtree
                     for r in rightSubtrees: # get each possible right subtree
                         # create root node with each combination of left and right subtrees

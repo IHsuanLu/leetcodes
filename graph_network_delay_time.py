@@ -8,27 +8,31 @@ import heapq
 
 class Solution:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        # Directed Acyclic Graph + Find the minimum path -> Dijstra's Algorithm
+        # Use min heap to decide which one to go next 
         adjacents = collections.defaultdict(list)
-        
         for _from, _to, time in times:
-            adjacents[_from].append((_to, time))
-        
-        min_heap = [(0, k)]
-        heapq.heapify(min_heap)
-        
-        visited = set()        
-        while len(min_heap) > 0:
-            path_time, node = heapq.heappop(min_heap)
-            if node in visited:
-                continue
-            visited.add(node)
-            
-            if len(visited) == n:
-                return path_time
+            adjacents[_from].append((time, _to))
 
-            for child, child_path_time in adjacents[node]:
-                heapq.heappush(min_heap, (path_time + child_path_time, child))
-        
+        min_heap = []
+        heapq.heapify(min_heap)
+        for item in adjacents[k]:
+            heapq.heappush(min_heap, item)
+
+        visited = { k }
+        while min_heap:
+            nxt_time_consumed, nxt_node = heapq.heappop(min_heap)
+            if nxt_node in visited:
+                continue
+            visited.add(nxt_node)
+
+            if len(visited) == n:
+                return nxt_time_consumed
+
+            for child_time_consumed, child in adjacents[nxt_node]:
+                # store the acc time here, so we don't need to handle the min_sum separately
+                heapq.heappush(min_heap, (nxt_time_consumed + child_time_consumed, child))
+
         # if not every node is visted -> there is unconnected nodes
         return -1
 

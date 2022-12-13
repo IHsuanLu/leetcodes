@@ -4,6 +4,12 @@ from ast import List
 class Solution:
     def alienOrder(self, words: List[str]) -> str:
         # create adjacent lists
+        # we cannot use collections.defaultdict(list) here, since we want to also get empty array if the char has no prereq
+        """
+        ['z', 'z']
+        we want -> {'z': []}
+        but not -> {}
+        """
         pre_map = {i: [] for i in set("".join(words))}
         
         for i in range(1, len(words)):
@@ -17,8 +23,7 @@ class Solution:
                     return ""
         
         res = []
-        visited = set()
-        cycle = set()
+        visited, cycle = set(), set()
         def dfs(node):
             if node in cycle:
                 return False
