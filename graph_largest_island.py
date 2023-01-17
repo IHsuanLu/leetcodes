@@ -1,3 +1,7 @@
+from ast import List
+import collections
+
+
 class Solution:
     def largestIsland(self, grid: List[List[int]]) -> int:
         row_nums, col_nums = len(grid), len(grid[0])
@@ -18,7 +22,6 @@ class Solution:
             paint(row, col + 1, color)
             paint(row, col - 1, color)
         
-        max_val = 0
         for r in range(row_nums):
             for c in range(col_nums):
                 if grid[r][c] != 1:

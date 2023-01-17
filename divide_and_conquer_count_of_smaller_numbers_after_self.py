@@ -4,9 +4,6 @@ from ast import List
 
 class Solution:
     def countSmaller(self, nums: List[int]) -> List[int]:
-        if not nums:
-            return []
-
         def divide(tuples):
             if len(tuples) == 1:
                 return tuples
@@ -14,26 +11,33 @@ class Solution:
             left = divide(tuples[:mid])
             right = divide(tuples[mid:])
             return conquer(left, right)
-        
+
         def conquer(left, right):
             merged_arr = []
             i = j = 0
             while i < len(left) and j < len(right):
-                if left[i][0] > right[j][0]:
+                """
+                1. why sort the array in descending order?
+                    -> if we move the smaller value upfront (sorted ascending order)
+                        -> the rest rounds will generate the wrong output cause the smaller value is moved to the front
+                2. why `+= len(right) - j`?
+                    -> since the array is sorted in descending order each round
+                        -> once we found the first smaller value, we can assume the remaining element (index > j) will all be smaller than `left[i][1]`
+                """
+                if left[i][1] > right[j][1]:
                     merged_arr.append(left[i])
-                    res[left[i][1]] += len(right) - j
+                    res[left[i][0]] += len(right) - j
                     i += 1
                 else:
                     merged_arr.append(right[j])
                     j += 1
             merged_arr.extend(left[i:] or right[j:])
             return merged_arr
-        
+
         res = [0] * len(nums)
-        tuples = [(n,i) for i,n in enumerate(nums)]
+        tuples = [(i, n) for i, n in enumerate(nums)]
         divide(tuples)
         return res
-
 
 # O(n^2) -> time limited exceeded
 class Solution:

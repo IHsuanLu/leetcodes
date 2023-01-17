@@ -1,0 +1,30 @@
+class Solution:
+    def smallestEquivalentString(self, s1: str, s2: str, baseStr: str) -> str:
+        parents = [i for i in range(26)]
+        def find(node):
+            parent = parents[node]
+            while parents[parent] != parent:
+                parents[parent] = parents[parents[parent]]
+                parent = parents[parent]
+            
+            return parent
+
+        def union(node1, node2):
+            root1, root2 = find(node1), find(node2)
+
+            if root1 == root2:
+                return
+            
+            if root1 > root2:
+                parents[root1] = root2
+            else:
+                parents[root2] = root1
+
+        for i in range(len(s1)):
+            union(ord(s1[i]) - ord('a'), ord(s2[i]) - ord('a'))
+
+        res = []
+        for c in baseStr:
+            res.append(chr(find(ord(c) - ord('a')) + ord('a')))
+
+        return "".join(res)
